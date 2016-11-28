@@ -1,0 +1,60 @@
+<html>
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="Graph.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="mainPageDesign.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    
+</head>
+
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">WebSiteName</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href="#"><font size="3">Temperature</font></a></li>
+                <li><a href="#"><font size="3">pH</font></a></li>
+                <li><a href="#"><font size="3">ORP</font></a></li> 
+                <li><a href="#"><font size="3">Salinity</font></a></li> 
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> <font size="3">Sign Up</font></a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> <font size="3">Logout</font></a></li>
+            </ul>
+
+                
+    </nav>
+
+       
+    <h2 class="headTitle"><font color="#250A91">Temperature</font></h2>
+
+    <div class="row">
+        <div class="col-md-6">      
+            <div id="curve_chart"></div>
+        </div>
+
+        <div  class="col-md-6">
+            <h2><font color="#250A91" size="6">Standard :</font></h2>
+        </div>
+    </div>
+    
+
+</body>
+</html>

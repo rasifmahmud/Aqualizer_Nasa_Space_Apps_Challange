@@ -1,0 +1,25 @@
+html,body{height:100%;}body{display:flex;align-items:center;justify-content:center;background:#003155;}svg{max-width:100%;}
+
+// Required
+// ====================================
+
+$proportion: 20px;
+$fill: #008BB6;
+
+.wave {
+  width: $proportion;
+  height: $proportion;
+  transform: scale(.5) rotate(-90deg) translateY(-300%);
+}
+
+.wave svg {
+  > * {
+    fill: $fill;
+  }
+}
+
+@for $i from 1 through 13 {
+  .wave svg:nth-child(#{$i}) circle {
+    opacity: $i / 100 * 8;
+  }
+}

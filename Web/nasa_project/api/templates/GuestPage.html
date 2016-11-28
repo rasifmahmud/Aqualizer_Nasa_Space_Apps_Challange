@@ -1,0 +1,172 @@
+{% load static %}
+<html>
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/GuestPageDesign.css" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="javascript:void(0);"><b><font size="5">Aqualizer</font></b></a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <!-- <li><a href="#"><font size="3">Temperature</font></a></li>
+                <li><a href="#"><font size="3">pH</font></a></li>
+                <li><a href="#"><font size="3">ORP</font></a></li> 
+                <li><a href="#"><font size="3">Salinity</font></a></li>  -->
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:void(0);"><span class="glyphicon glyphicon-user"> <font size="3">public</font></a></li>
+                <!-- <li><a href="#"><span class="glyphicon glyphicon-edit"></span> <font size="3">Edit</font></a></li> -->
+                <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-in"></span> <font size="3">Logout</font></a></li>
+            </ul>
+
+                
+    </nav>
+
+
+
+    <!-- MAP SHOWING STARTS-->
+
+    <h2 class="headTitle"><font size="8">Geolocations of Aqualizer</font></h2><br>
+    
+    <div id="map"></div>
+    <script>
+      var timer;
+      var address = [];
+      var marked = [];
+      var bounds;
+      var sending_lat_long = [];
+
+      function initMap() {
+        var latlng = {lat: 23.6850, lng: 90.3563};
+        
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: latlng
+        });
+        bounds = new google.maps.LatLngBounds();
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+
+
+        var latlngStr ;
+        var latlngAra = []
+        //var latlng;
+        var i = 0;
+
+        {% for water in water_data %}
+               //latlngStr = water.split('*',2);
+               latlngStr = new String("{{water.geoLocation}}");
+               sending_lat_long[i] = latlngStr;
+               latlngStr = latlngStr.split('*',2);
+               latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])}; 
+               latlngAra[i] = latlng;
+              //window.alert(latlng);
+              marked[i] = 0;
+              //window.alert(i);
+               // geocodeLatLng(geocoder, map, infowindow, latlng, i);
+
+               i++; 
+
+               
+        
+        {% endfor %}
+
+        geocodeLatLng(geocoder, map, infowindow, latlngAra, 0, latlngAra.length);
+        
+
+        //latlng = {lat: 23.6850, lng: 90.3563};
+        //geocodeLatLng(geocoder, map, infowindow, latlng);
+
+        
+      }
+      
+
+
+      function geocodeLatLng(geocoder, map, infowindow, latlngAra, item,end) {
+            if(item>=end-1){
+              clearTimeout(timer);
+            }
+            else{
+              //clearTimeout(timer);
+              timer = setTimeout(function(){geocodeLatLng(geocoder,map,infowindow,latlngAra, item+1,end)},1001);
+
+            }
+            
+
+        
+            
+            geocoder.geocode({'location': latlngAra[item]}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+              if (results[1]) {
+                //window.alert(item);
+                //map.setZoom(3);
+                map.fitBounds(bounds);
+                var marker = new google.maps.Marker({
+                  position: latlngAra[item],
+                  map: map
+                });
+    
+                
+                if(marked[item] == 0){
+                    marked[item] = 1;
+                    address[item] = results[1].formatted_address;
+                    bounds.extend(marker.position);
+
+                }
+
+
+                marker.addListener('mouseover', function() {
+                      infowindow.setContent(address[item]);
+                      infowindow.open(map, this);
+                });
+
+                 // assuming you also want to hide the infowindow when user mouses-out
+                marker.addListener('mouseout', function() {
+                      infowindow.close();
+                });
+
+                marker.addListener('click', function() {
+                
+                    window.location = '/accounts/guest_page/' + sending_lat_long[item];
+                });
+              } else {
+                window.alert('No results found');
+              }
+
+              //clearTimeout(timer);
+            } else {
+              //window.alert('Geocoder failed due to: ' + status);
+            }
+          });
+        //}
+        
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBovNUqX9pCdAOz8GRJVIBcsajmOsApKDs&callback=initMap">
+    </script>
+
+    <!-- MAP SHOWING ENDS -->
+</body>

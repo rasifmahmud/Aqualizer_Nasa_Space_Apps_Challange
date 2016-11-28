@@ -1,0 +1,37 @@
+<html>
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="login.js"></script>
+	<link rel="stylesheet" type="text/css" href="headDesigner.css">
+	<!-- FOR LOGIN -->
+	<link rel="stylesheet" type="text/css" href="loginDesign.css">
+	<script src="js/prefixfree.min.js"></script>
+
+</head>
+
+<body>
+	<div id="parent_div">
+		<div id="main_body_div">
+			<div id="floor_div">
+				<section id="play_section">
+					<img id="main_background" src="Image/background_original.jpg">
+				</section>
+			</div>
+
+			<div class="login">
+				<input type="text" placeholder="username" name="user"><br>
+				<input type="password" placeholder="password" name="password"><br>
+				<input type="button" value="Login" onclick="loginButtClick()">
+			</div>
+			
+			
+		</div>
+	</div>
+
+</body>
+</html>

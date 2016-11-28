@@ -1,0 +1,419 @@
+{% load static %}
+
+<html>
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- <script type="text/javascript" src="{% static "assets/js/Graph.js" %}"></script> -->
+
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/mainPageDesign.css" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    
+</head>
+
+
+<body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="javascript:void(0);"><b><font size="5">Aqualizer</font></b></a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href="#temp"><font size="3">Temperature</font></a></li>
+                <li><a href="#ph"><font size="3">pH</font></a></li>
+                <li><a href="#orp"><font size="3">ORP</font></a></li> 
+                <li><a href="#salinity"><font size="3">Salinity</font></a></li>
+                <li><a href="#geoloc"><font size="3">Geolocation</font></a></li> 
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:void(0);"><span class="glyphicon glyphicon-user"> <font size="3">public</font></a></li>
+                <!-- <li><a href="/accounts/edit/"><span class="glyphicon glyphicon-edit"></span> <font size="3">Edit</font></a></li> -->
+                <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-in"></span> <font size="3">Logout</font></a></li>
+            </ul>
+
+                
+    </nav>
+
+       
+    <h2 class="headTitle" id="temp"  style="padding-top:3%; padding-bottom: 2%;"><font size="8">Temperature</font></h2>
+
+    <div class="row" style="padding-bottom: 1%;">
+        <div class="col-md-11">      
+            <div id="curve_chart" style="padding-left: 9%;" class="graphDiv" ></div>
+        </div>
+
+        <!-- <div  class="col-md-4">
+            <h2 class="headTitle" id="tempStand"><font color="#250A91" size="6">Standard :&nbsp;</font>
+                <font color="#0097A7" size="5">{{standard_data.from_temperature}} - {{standard_data.to_temperature}}</font>
+            </h2>
+            <h2 class="headTitle" id="tempCurr"><font color="#250A91" size="6">Current &nbsp;:&nbsp;</font>
+                <font color="#0097A7" size="5">{{current_data.temperature}}</font>
+            </h2>
+        </div> -->
+    </div>
+
+
+
+    
+
+
+    <h2 class="headTitle" id="ph"  style="padding-top:3%; padding-bottom: 2%;"><font size="8">pH</font></h2>
+
+    <div class="row" style="padding-bottom: 1%;">
+        <div class="col-md-11">      
+            <div id="curve_chart1" style="padding-left: 9%;" class="graphDiv"></div>
+        </div>
+
+        <!-- <div  class="col-md-4">
+            <h2 class="headTitle" id="phStand"><font color="#250A91" size="6">Standard :&nbsp;</font>
+                <font color="#0097A7" size="5">{{standard_data.from_ph}} - {{standard_data.to_ph}}</font>
+            </h2>
+            <h2 class="headTitle" id="phCurr"><font color="#250A91" size="6">Current &nbsp;:&nbsp;</font>
+                <font color="#0097A7" size="5">{{current_data.ph}}</font>
+            </h2>
+        </div> -->
+    </div>
+
+
+
+    
+
+
+    <h2 class="headTitle" id="orp"  style="padding-top:3%; padding-bottom: 2%;"><font size="8">ORP</font></h2>
+
+    <div class="row" style="padding-bottom: 1%;">
+        <div class="col-md-11">      
+            <div id="curve_chart2" style="padding-left: 9%;" class="graphDiv"></div>
+        </div>
+
+        <!-- <div  class="col-md-4">
+            <h2 class="headTitle" id="orpStand"><font color="#250A91" size="6">Standard :&nbsp;</font>
+                <font color="#0097A7" size="5">{{standard_data.from_orp}} - {{standard_data.to_orp}}</font>
+            </h2>
+            <h2 class="headTitle" id="orpCurr"><font color="#250A91" size="6">Current &nbsp;:&nbsp;</font>
+                <font color="#0097A7" size="5">{{current_data.orp}}</font>
+            </h2>
+        </div> -->
+    </div>
+
+
+
+    
+
+    <h2 class="headTitle" id="salinity"  style="padding-top:3%; padding-bottom: 2%;"><font size="8">Salinity</font></h2>
+
+    <div class="row" style="padding-bottom: 1%;">
+        <div class="col-md-11">      
+            <div id="curve_chart3" style="padding-left: 9%;" class="graphDiv"></div>
+        </div>
+
+        <!-- <div  class="col-md-4">
+            <h2 class="headTitle" id="salStand"><font color="#250A91" size="6">Standard :&nbsp;</font>
+                <font color="#0097A7" size="5">{{standard_data.from_salinity}} - {{standard_data.to_salinity}}</font>
+            </h2>
+            <h2 class="headTitle" id="salCurr"><font color="#250A91" size="6">Current &nbsp;:&nbsp;</font>
+                <font color="#0097A7" size="5" >{{current_data.salinity}}</font>
+            </h2>
+        </div> -->
+    </div>
+
+    
+    <script type="text/javascript">
+
+
+
+        /******************TO DRAW GRAPH STARTS************************/
+
+
+        var xData = [];         //TEMPERATURE
+        var yData = [];
+
+        var xData1 = [];        //ph
+        var yData1 = [];
+        
+        var xData2 = [];        //ORP
+        var yData2 = [];
+        
+        var xData3 = [];        //SALINITY
+        var yData3 = [];
+        
+        
+
+        //TEMPERATURE
+        var i = 0;
+    
+        {% for water in water_data %}
+            yData[i] = {{ water.temperature }};
+            xData[i] = new Date("{{ water.dateTime.isoformat }}");
+            i = i + 1;
+                    
+        
+        {% endfor %}
+
+
+        
+        //ph
+        i = 0;
+    
+        {% for water in water_data %}
+            yData1[i] = {{ water.ph }};
+            xData1[i] = new Date("{{ water.dateTime.isoformat }}");
+            i = i + 1;
+                    
+        
+        {% endfor %}
+
+
+
+        //orp
+        i = 0;
+    
+        {% for water in water_data %}
+            yData2[i] = {{ water.orp }};
+            xData2[i] = new Date("{{ water.dateTime.isoformat }}");
+            i = i + 1;
+                    
+        
+        {% endfor %}
+
+
+
+        //salinity
+        i = 0;
+    
+        {% for water in water_data %}
+            yData3[i] = {{ water.salinity }};
+            xData3[i] = new Date("{{ water.dateTime.isoformat }}");
+            i = i + 1;
+                    
+        
+        {% endfor %}
+        
+
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        //window.alert(xData[2]);
+
+
+        function resizeCharts () {
+            drawChart();
+        }
+        if (window.addEventListener) {
+            window.addEventListener('resize', resizeCharts);
+        }
+        else if (window.attachEvent) {
+            window.attachEvent('onresize', resizeCharts);
+        }
+        else {
+            window.onresize = resizeCharts;
+        }
+
+
+
+
+
+              function drawChart() {
+
+                var data = new google.visualization.DataTable();        //TEMPERATURE
+                var data1 = new google.visualization.DataTable();        //ph
+                var data2 = new google.visualization.DataTable();        //orp
+                var data3 = new google.visualization.DataTable();        //salinity
+
+                //TEMPERATURE
+                data.addColumn('string', 'Date');
+                data.addColumn('number', 'Temperature');
+
+                //ph
+                data1.addColumn('string', 'Date');
+                data1.addColumn('number', 'ph');
+
+                //orp
+                data2.addColumn('string', 'Date');
+                data2.addColumn('number', 'ORP');
+
+                //salinity
+                data3.addColumn('string', 'Date');
+                data3.addColumn('number', 'Salinity');
+
+                //TEMPERATURE
+                for(var j=0;j<yData.length;j++){
+                    data.addRow([xData[j].toLocaleDateString(),parseFloat(yData[j])]);
+                }
+
+                //ph
+                for(var j=0;j<yData.length;j++){
+                    data1.addRow([xData1[j].toLocaleDateString(),parseFloat(yData1[j])]);
+                }
+
+                //orp
+                for(var j=0;j<yData.length;j++){
+                    data2.addRow([xData2[j].toLocaleDateString(),parseFloat(yData2[j])]);
+                }
+
+                //salinity
+                for(var j=0;j<yData.length;j++){
+                    data3.addRow([xData3[j].toLocaleDateString(),parseFloat(yData3[j])]);
+                }
+
+
+                var options = {
+                  title: 'Temperature (in deg.)',
+                  curveType: 'function',
+                  legend: { position: 'bottom' },
+                  pointShape:  'circle',
+                  pointSize: 7
+                };
+
+                var options1 = {
+                  title: 'pH',
+                  curveType: 'function',
+                  legend: { position: 'bottom' },
+                  pointShape:  'circle',
+                  pointSize: 7
+                };
+
+                var options2 = {
+                  title: 'Dissolved Oxygen (in (mg/L))',
+                  curveType: 'function',
+                  legend: { position: 'bottom' },
+                  pointShape:  'circle',
+                  pointSize: 7
+                };
+
+                var options3 = {
+                  title: 'Salinity (in ppt)',
+                  curveType: 'function',
+                  legend: { position: 'bottom' },
+                  pointShape:  'circle',
+                  pointSize: 7
+                };
+
+                //TEMPERATURE
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                chart.draw(data, options);
+
+                //ph
+                var chart1 = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+                chart1.draw(data1, options1);
+
+                //orp
+                var chart2 = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+                chart2.draw(data2, options2);
+
+                //salinity
+                var chart3 = new google.visualization.LineChart(document.getElementById('curve_chart3'));
+                chart3.draw(data3, options3);
+                
+      }        
+
+
+      /******************TO DRAW GRAPH ENDS************************/
+    </script>
+
+
+
+    <div style="padding-bottom: 3%;"></div>
+
+
+    <!-- MAP SHOWING STARTS-->
+
+    <h2 class="headTitle" id="geoloc"><font size="8">Geolocation</font></h2><br>
+
+    <div id="map"></div>
+    <script>
+
+      function initMap() {
+        var latlng;
+        var latlngStr;
+        {% for water in water_data %}
+               
+               latlngStr = new String("{{water.geoLocation}}");
+               latlngStr = latlngStr.split('*',2);
+               latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};                
+        
+        {% endfor %}
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: latlng
+        });
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+
+        geocodeLatLng(geocoder, map, infowindow, latlng);
+      }
+
+
+      function geocodeLatLng(geocoder, map, infowindow, latlng) {
+        /*timer = setTimeout(function(){geocodeLatLng(geocoder,map,infowindow,latlng)},1001);*/
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              map.setZoom(8);
+              var marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+              });
+              infowindow.setContent(results[1].formatted_address);
+              marker.addListener('mouseover', function() {
+                    infowindow.open(map, this);
+              });
+
+               // assuming you also want to hide the infowindow when user mouses-out
+              marker.addListener('mouseout', function() {
+                    infowindow.close();
+              });
+
+              marker.addListener('click', function() {
+                    //ADD HERE THE PAGE OF THAT MARKER
+                    //NOW SHOWING DEMO
+                    window.location = 'javascript:void(0);';
+              });
+              /*clearTimeout(timer);*/
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            //window.alert('Geocoder failed due to: ' + status);
+            /*timer = setTimeout(function(){geocodeLatLng(geocoder,map,infowindow,latlng)},1001);*/
+          }
+        });
+      }
+    </script>
+
+    <!-- <div style="padding-bottom: 6%;"></div> -->
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBovNUqX9pCdAOz8GRJVIBcsajmOsApKDs&callback=initMap">
+    </script>
+<script type="text/javascript">
+      $('a[href^="#"]').on('click', function(event) {
+
+      var target = $( $(this).attr('href') );
+      var targetOffset = $(target).offset().top - 10;
+
+      if( target.length ) {
+          event.preventDefault();
+          $('html, body').animate({
+              scrollTop: targetOffset
+          }, 700);
+      }
+
+});
+    </script>
+</body>
+</html>
+
+

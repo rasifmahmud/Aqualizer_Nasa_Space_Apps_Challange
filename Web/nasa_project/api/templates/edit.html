@@ -1,0 +1,364 @@
+{% load static %}
+<html>
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- <script type="text/javascript" src="{% static "assets/js/Graph.js" %}"></script> -->
+
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/EditDesign.css" %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+	
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="javascript:void(0);"><b><font size="5">Aqualizer</font></b></a>
+            </div>
+
+            
+
+            <ul class="nav navbar-nav">
+                <li><a href="#standSet"><font size="3">Standards</font></a></li>
+                <li><a href="#profSet"><font size="3">Profile</font></a></li>
+                <!-- <li><a href="#orpSet"><font size="3">ORP</font></a></li> 
+                <li><a href="#salSet"><font size="3">Salinity</font></a></li>  -->
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/accounts/loggedin/"><span class="glyphicon glyphicon-user"> <font size="3">{{current_user}}</font></a></li>
+                <li><a href="javascript:void(0);"><span class="glyphicon glyphicon-edit"></span> <font size="3">Edit</font></a></li>
+                
+                <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-in"></span> <font size="3">Logout</font></a></li>
+            </ul>
+
+                
+    </nav>
+
+<body>
+
+	
+
+
+
+    <div id="parentDiv">
+    <h2 class="headTitle" id="standSet"><font size="8"><span class="glyphicon glyphicon-wrench"></span>    &nbsp;  Standards</font></h2>
+    <h1 class="headTitle"><font size="6" color="#122E8A">      Temperature</font></h1>
+
+
+    <div class="formDiv">
+    	<form class="form-inline" action="/accounts/edit/" method="post">
+      {% csrf_token %}
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputEmail3">From</label> -->
+	    		<input type="number" class="form-control" id="exampleInputEmail3" name="from_temp" placeholder="{{data.from_temperature}}" step="any">
+	  		</div>
+
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputPassword3">To</label> -->
+	    		<input type="number" class="form-control" id="exampleInputPassword3" name="to_temp" placeholder="{{data.to_temperature}}" step="any">
+	  		</div>
+	  		
+	  		<button type="submit" class="btn btn-primary" name="temp_set">Set</button>
+		</form>
+    </div>
+
+
+    
+
+    <h1 class="headTitle"><font size="6" color="#122E8A">     pH</font></h2>
+
+
+    <div class="formDiv">
+    	<form class="form-inline" action="/accounts/edit/" method="post">
+      {% csrf_token %}
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputEmail3">From</label> -->
+	    		<input type="number" class="form-control" id="exampleInputEmail3" name="from_ph" placeholder="{{data.from_ph}}" step="any">
+	  		</div>
+
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputPassword3">To</label> -->
+	    		<input type="number" class="form-control" id="exampleInputPassword3" name="to_ph" placeholder="{{data.to_ph}}" step="any">
+	  		</div>
+
+	  		<!-- <div class="checkbox"> -->
+	    		<!-- <select class="c-select">
+				 	<option selected>Select Scale</option>
+				 	<option value="1">Celcious</option>
+				 	<option value="2">Fahrenheit</option>
+				</select> -->
+	  		<!-- </div> -->
+	  		
+	  		<button type="submit" class="btn btn-primary" name = "ph_set">Set</button>
+		</form>
+    </div>
+
+
+
+    <h1 class="headTitle"><font size="6" color="#122E8A">      ORP</font></h2>
+
+
+    <div class="formDiv">
+    	<form class="form-inline" action="/accounts/edit/" method="post">
+      {% csrf_token %}
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputEmail3">From</label> -->
+	    		<input type="number" class="form-control" id="exampleInputEmail3" name="from_orp" placeholder="{{data.from_orp}}" step="any">
+	  		</div>
+
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputPassword3">To</label> -->
+	    		<input type="number" class="form-control" id="exampleInputPassword3" name="to_orp" placeholder="{{data.to_orp}}" step="any">
+	  		</div>
+
+	  		<!-- <div class="checkbox"> -->
+	    		<!-- <select class="c-select">
+				 	<option selected>Select Scale</option>
+				 	<option value="1">Celcious</option>
+				 	<option value="2">Fahrenheit</option>
+				</select> -->
+	  		<!-- </div> -->
+	  		
+	  		<button type="submit" class="btn btn-primary" name = "orp_set">Set</button>
+		</form>
+    </div>
+
+
+
+
+    <h1 class="headTitle"><font size="6" color="#122E8A">      Salinity</font></h2>
+
+
+    <div class="formDiv">
+    	<form class="form-inline" action="/accounts/edit/" method="post" >
+      {% csrf_token %}
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputEmail3">From</label> -->
+	    		<input type="number" class="form-control" id="exampleInputEmail3" name="from_salinity" placeholder="{{data.from_salinity}}" step="any">
+	  		</div>
+
+	  		<div class="form-group">
+	    		<!-- <label class="sr-only" for="exampleInputPassword3">To</label> -->
+	    		<input type="number" class="form-control" id="exampleInputPassword3" name="to_salinity" placeholder="{{data.to_salinity}}" step="any">
+	  		</div>
+
+	  		<!-- <div class="checkbox"> -->
+	    		<!-- <select class="c-select">
+				 	<option selected>Select Scale</option>
+				 	<option value="1">Celcious</option>
+				 	<option value="2">Fahrenheit</option>
+				</select> -->
+	  		<!-- </div> -->
+	  		
+	  		<button type="submit" class="btn btn-primary" name = "sal_set">Set</button>
+		</form>
+    </div>
+
+
+    <!-- PROFILE -->
+
+    <div id="gapDiv"></div>
+
+    <h2 class="headTitle" id="profSet"><font size="8"><span class="glyphicon glyphicon-user"></span>    &nbsp;  Profile</font></h2>
+
+
+
+	<form class="form-horizontal" role="form" action="" method="" id="edit_form">
+  {% csrf_token %}
+  		<div class="form-group">
+    		<label class="control-label col-sm-2" for="username">Username:</label>
+    		<div class="col-sm-4">
+      			<input type="text" class="form-control" id="username" name="username" placeholder="{{user.username}}"  title="Unable to change" disabled>
+    		</div>
+  		</div>
+
+  		<div class="form-group">
+    		<label class="control-label col-sm-2" for="password">Password:</label>
+    		<div class="col-sm-4"> 
+      			<input type="password" class="form-control" id="password"  title="Click to change" name="password" placeholder="">
+    		</div>
+  		</div>
+
+  		<div class="form-group">
+    		<label class="control-label col-sm-2" for="retype_password">Retype Password:</label>
+    		<div class="col-sm-4">
+      			<input type="password" class="form-control" id="retype_password"  title="Click to change" name="retype_password" placeholder="">
+    		</div>
+  		</div>
+
+  		<div class="form-group">
+    		<label class="control-label col-sm-2" for="deviceID">DeviceID:</label>
+    		<div class="col-sm-4">
+      			<input type="text" class="form-control" id="deviceID" name = "deviceID" placeholder="{{user_device.deviceID}}" title="Unable to change" disabled>
+    		</div>
+  		</div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="deviceID">Access Type:</label>
+        <div class="col-sm-4">
+            
+            <div class="radio-inline">
+              <label><input type="radio" name="pubradio" id="pubradio" value="1">Public</label>
+            </div>
+            <div class="radio-inline">
+              <label><input type="radio" name="pubradio" id="pubradio" value="2">Private</label>
+            </div>
+        </div>
+
+      </div>
+
+  		<div class="form-group">
+    		<label class="control-label col-sm-2" for="email">Email:</label>
+    		<div class="col-sm-4">
+      			<input type="email" class="form-control" id="email" name="email" placeholder="{{user.email}}" title="Click to change">
+    		</div>
+  		</div>
+
+  		<div class="form-group">
+    		<label class="control-label col-sm-2" for="mobileNo">Mobile No:</label>
+    		<div class="col-sm-4">
+      			<input type="text" class="form-control" id="mobileNo" name="mobileNo" placeholder="{{user_device.mobileNo}}" title="Click to change">
+    		</div>
+  		</div>
+
+  		<div class="form-group"> 
+    		<div class="col-sm-offset-2 col-sm-10">
+          <input class="btn btn-primary" type="button" value="Done" onclick="editButtClick()">    		</div>
+  		</div>
+
+      <div class="form-group"> 
+        <!-- <div class="col-sm-offset-2 col-sm-10" id="errors" style="font-family: "Lucida Console", Monaco, monospace;"> -->
+          <div class="alert alert-danger" style="margin-left: 12%; margin-right: 48%; visibility: hidden;" id="errorDiv">
+              <span class="" id="errorSpan"></span>
+              <label id="errors"></label>
+          </div>
+
+          <!-- <div class="alert alert-danger" role="alert" id="errors">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            
+          </div> -->
+
+        </div>
+      </div>
+
+  	</form>	
+                  
+
+    <div id="gapDiv"></div>
+    <div id="gapDiv"></div>
+
+
+    
+
+
+
+
+    <script type="text/javascript">
+    	$('a[href^="#"]').on('click', function(event) {
+
+	    var target = $( $(this).attr('href') );
+	    var targetOffset = $(target).offset().top - 52;
+
+	    if( target.length ) {
+	        event.preventDefault();
+	        $('html, body').animate({
+	            scrollTop: targetOffset
+	        }, 700);
+	    }
+
+});
+    </script>
+        <script type="text/javascript">
+          //document.getElementById("errors").innerHTML = "";
+          function validateEmail(email) {
+              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return re.test(email);
+          }
+
+
+          function editButtClick(){
+              // document.getElementById("errors").innerHTML = "";
+
+              var flag=0;
+              var mobile_no = document.getElementById("mobileNo");
+              var email=document.getElementById("email");
+              var password=document.getElementById("password");
+              var retype_password = document.getElementById("retype_password");
+
+
+              String.prototype.isNumber = function(){return /^\d+$/.test(this);}
+              // mobile number should contain only digits
+              if(flag==0 && (String(mobile_no.value).length!=0) && String(mobile_no.value).isNumber()==false){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Mobile Number Should Contain Only Digits";
+                document.getElementById("errorSpan").className = "glyphicon glyphicon-exclamation-sign";
+                document.getElementById("errorDiv").style.visibility = "visible";
+              }
+
+              // checking if its a valid email
+              if(flag==0 && String(email.value).length!=0 && validateEmail(email.value)==false){
+                  flag=1;
+                  document.getElementById("errors").innerHTML = "Please Enter A Valid Email Address";
+                  document.getElementById("errorSpan").className = "glyphicon glyphicon-exclamation-sign";
+                  document.getElementById("errorDiv").style.visibility = "visible";
+
+
+              }
+
+
+
+
+              //password should be atleast 8 character long 
+              if(flag==0 && String(password.value).length!=0 && String(password.value).length<8){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Password Should Be Atleast 8 Characters Long";
+                document.getElementById("errorSpan").className = "glyphicon glyphicon-exclamation-sign";
+                document.getElementById("errorDiv").style.visibility = "visible";
+
+              }
+ 
+              // password should not contain only digits             
+              if(flag==0 && String(password.value).length!=0 && String(password.value).isNumber()){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Password Should Not Contain Only Digits";
+                document.getElementById("errorSpan").className = "glyphicon glyphicon-exclamation-sign";
+                document.getElementById("errorDiv").style.visibility = "visible";
+
+              }
+
+              // checking if passwords match ()
+              if(flag==0 && String(password.value).length!=0 && password.value!=retype_password.value){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Password Doesnt Match";
+                document.getElementById("errorSpan").className = "glyphicon glyphicon-exclamation-sign";
+                document.getElementById("errorDiv").style.visibility = "visible";
+
+              }
+               
+
+              if(flag==0){
+                //window.alert("I am here");
+                document.getElementById("edit_form").action="/accounts/edit/"; // Submitting form
+                document.getElementById("edit_form").method="post"; // Submitting form
+                document.getElementById("edit_form").submit(); // Submitting form
+              }
+          }
+
+        </script>
+
+
+
+</body>
+</html>

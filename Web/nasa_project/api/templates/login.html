@@ -1,0 +1,90 @@
+{% load static %}
+<html>
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+<head>
+	<meta charset="UTF-8">
+<!-- 	<script type="text/javascript" src="{% static "assets/js/login.js" %}"></script>
+ -->	<link rel="stylesheet" type="text/css" href="{% static "assets/css/headDesigner.css" %}">
+	<!-- FOR LOGIN -->
+	<link rel="stylesheet" type="text/css" href="{% static "assets/css/loginDesign.css" %}">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="{% static "assets/js/prefixfree.min.js" %}"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+	<div id="parent_div">
+		<div id="main_body_div">
+			<div id="floor_div">
+				<section id="play_section">
+					<img id="main_background" src="{% static "assets/img/background_original.jpg" %}">
+				</section>
+			</div>
+
+			<div class="login">
+        <form id = "login_form_id" action = "" method = ""> 
+        			{% csrf_token %}
+    				<input type="text" required="" placeholder="username" name="username" id="username"><br>
+    				<input type="password" required="" placeholder="password" name="password" id="password"><br>
+         			<div class="row-no-padding">
+        				<div class="col-md-5 nopadding">      
+            				<input class="bottom_butt" type="button" value="Login" onclick="loginButtClick()">
+        				</div>
+
+        				<div  class="col-md-5 nopadding">
+            				<input class="bottom_butt" type="button" value="SignUp" onclick="signUpButtClick()">
+    					</div>
+        
+        			</div>
+        			<input class="bottom_butt" type="button" value="Login as Guest" onclick="guestButtClick()">
+
+        </form>
+
+        			<div id ="errors"></div>
+
+<!--         			<a href="/accounts/register/">CLICK ME</a>
+ -->			</div>
+			
+			
+		</div>
+	</div>
+
+</body>
+<script>
+	document.getElementById("errors").innerHTML = "";
+	function loginButtClick(){
+	var flag=0;
+	document.getElementById("errors").innerHTML = "";
+	var inputUserName=document.getElementById("username");
+	var inputPassword=document.getElementById("password");
+ 		if(inputUserName.checkValidity()==false || inputPassword.value==""){
+ 			flag=1;
+ 			
+ 			document.getElementById("errors").innerHTML = "Please Fill Out All The Fields Correctly";
+ 		}
+    	if(flag==0){
+			document.getElementById("login_form_id").action="/accounts/auth/"; // Submitting form
+			document.getElementById("login_form_id").method="post"; // Submitting form
+			document.getElementById("login_form_id").submit(); // Submitting form
+		}
+	}
+	function signUpButtClick(){
+		document.getElementById("login_form_id").action="/accounts/register/"; // Submitting form
+		document.getElementById("login_form_id").method=""; // Submitting form
+		document.getElementById("login_form_id").submit(); // Submitting form
+	}
+	function guestButtClick(){
+		document.getElementById("login_form_id").action="/accounts/guest_page/"; // Submitting form
+		document.getElementById("login_form_id").method=""; // Submitting form
+		document.getElementById("login_form_id").submit(); // Submitting form
+
+	}
+
+</script>
+
+</html>

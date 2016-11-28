@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+<script type="text/javascript">
+    window.onbeforeunload = function(){
+        window.scrollTo(0,0);
+    }
+</script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sign-Up/Login Form</title>
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="{% static "assets/css/normalize.css" %}">
+
+    
+    <link rel="stylesheet" href="{% static "assets/css/style2.css" %}">
+
+    
+    
+    
+    
+  </head>
+
+  <body>
+
+    <div class="form">
+      
+      <ul class="tab-group">
+        <li class="tab active"><a href="#signup">Sign Up</a></li>
+      </ul>
+      
+      <div class="tab-content">
+        <div id="signup">   
+          <h1>Sign Up for Free</h1>
+          
+          <form id="signUp_form_id" action="/accounts/register/" method="post"> {% csrf_token %}
+          
+          <div class="top-row">
+            <div class="field-wrap">
+              <label>
+                User Name<span class="req">*</span>
+              </label>
+              <input type="text" required="" autocomplete="off" name="user_name" id="user_name"/>
+            </div>
+        
+            <div class="field-wrap">
+              <label>
+                DeviceID<span class="req">*</span>
+              </label>
+              <input type="text" required="" autocomplete="off" name="device_id" id="device_id"/>
+            </div>
+          </div>
+
+          <div class="field-wrap">
+            <label>
+              Email Address<span class="req">*</span>
+            </label>
+            <input type="email" required="" autocomplete="off" name="email" id="email"/>
+          </div>
+
+          <div class="field-wrap">
+            <label>
+              Mobile No.<span class="req">*</span>
+            </label>
+            <input type="text" required="" autocomplete="off" name="mobile_no" id="mobile_no"/>
+          </div>
+
+
+          <div class="field-wrap">
+            <label>
+              Access Type<span class="req">*</span>
+            </label>
+            <input type="text" required="" autocomplete="off" name="access_type" id="access_type" title="Please type either public or private"/>
+          </div>
+          
+          <div class="field-wrap">
+            <label>
+              Set A Password<span class="req">*</span>
+            </label>
+            <input type="password" required="" autocomplete="off" name="password" id="password"/>
+          </div>
+          <div class="field-wrap">
+            <label>
+              Retype Password<span class="req">*</span>
+            </label>
+            <input type="password" required="" autocomplete="off" name="retype_password" id="retype_password"/>
+          </div>
+
+          
+<!--           <button type="submit" class="button button-block"/>Get Started</button>
+ -->          <input class="button button-block" type="button" value="Get Started" onclick="signUpButtClick()">
+         
+          </form>
+                  <div id ="errors">
+                  </div>
+
+        </div>
+        
+        
+      </div><!-- tab-content -->
+      
+</div> <!-- /form -->
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+        <script src="{% static "assets/js/index2.js" %}"></script>
+        <script type="text/javascript">
+          
+          var users = [] ;
+          var i = 0 ;
+
+          {% for user in all_user %}
+
+
+              users[i] = new String("{{ user.user }}") ;
+
+
+              i = i + 1 ;
+
+
+          {% endfor %}
+          
+                  
+        </script>
+        <script type="text/javascript">
+          document.getElementById("errors").innerHTML = "";
+          function validateEmail(email) {
+              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              return re.test(email);
+          }
+
+
+          function signUpButtClick(){
+              document.getElementById("errors").innerHTML = "";
+
+              var flag=0;
+              var user_name = document.getElementById("user_name");
+              var device_id = document.getElementById("device_id");
+              var mobile_no = document.getElementById("mobile_no");
+              var access_type = document.getElementById("access_type");
+              var email=document.getElementById("email");
+              var password=document.getElementById("password");
+              var retype_password = document.getElementById("retype_password");
+
+              // checking if any field is empty or not
+              if(user_name.value=="" || device_id.value=="" || access_type.value=="" || mobile_no.value=="" || email.value=="" || password.value=="" || retype_password==""){
+                  flag=1;
+                  document.getElementById("errors").innerHTML = "Please Fill Out All The Fields";
+
+              }
+
+
+              //now need to check if its an existing user
+              if(flag==0){
+                  for(var loop=0;loop<users.length;loop++){
+                    if(String(users[loop])==String(user_name.value)){
+                      flag=1;
+                      document.getElementById("errors").innerHTML = "Username already exists";
+                      break;
+
+                    }
+                  }
+              }
+
+              // checking if its a valid email
+              if(flag==0 && validateEmail(email.value)==false){
+                  flag=1;
+                  document.getElementById("errors").innerHTML = "Please Enter A Valid Email Address";
+
+
+              }
+
+              String.prototype.isNumber = function(){return /^\d+$/.test(this);}
+              // mobile number should contain only digits
+              if(flag==0 && String(mobile_no.value).isNumber()==false){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Mobile Number Should Contain Only Digits";
+
+              }
+
+              // access type checking 
+              if(flag==0 && String(access_type.value).toLowerCase()!='private'){
+                if(String(access_type.value).toLowerCase()!='public'){
+                  flag=1;
+                  document.getElementById("errors").innerHTML = "Access Type Should Only Be Either public or private";
+                }               
+              }
+
+
+              //password should be atleast 8 character long 
+              if(flag==0 && String(password.value).length<8){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Password Should Be Atleast 8 Characters Long";
+
+              }
+ 
+              // password should not contain only digits             
+              if(flag==0 && String(password.value).isNumber()){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Password Should Not Contain Only Digits";
+
+              }
+
+              // checking if passwords match ()
+              if(flag==0 && password.value!=retype_password.value){
+                flag=1;
+                document.getElementById("errors").innerHTML = "Password Doesnt Match";
+
+              }
+               
+
+              if(flag==0){
+                document.getElementById("signUp_form_id").action="/accounts/register/"; // Submitting form
+                document.getElementById("signUp_form_id").method="post"; // Submitting form
+                document.getElementById("signUp_form_id").submit(); // Submitting form
+              }
+          }
+
+        </script>
+    
+  </body>
+</html>
